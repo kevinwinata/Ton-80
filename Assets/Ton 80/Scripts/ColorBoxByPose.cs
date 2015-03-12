@@ -40,7 +40,7 @@ public class ColorBoxByPose : MonoBehaviour
 
             // Vibrate the Myo armband when a fist is made.
             if (thalmicMyo.pose == Pose.Fist) {
-                thalmicMyo.Vibrate (VibrationType.Medium);
+                // thalmicMyo.Vibrate (VibrationType.Medium);
 
                 ExtendUnlockAndNotifyUserAction (thalmicMyo);
 
