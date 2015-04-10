@@ -25,7 +25,7 @@ public class AimAndThrow : MonoBehaviour
 		// Access the ThalmicMyo component attached to the Myo object.
 		ThalmicMyo thalmicMyo = myo.GetComponent<ThalmicMyo> ();
 		if (thalmicMyo.pose != _lastPose && 
-			(_lastPose == Pose.Fist || _lastPose == Pose.WaveIn) &&
+			(_lastPose == Pose.Fist || _lastPose == Pose.WaveOut) &&
 			velocity.z > 0) {
 			//rb.velocity = new Vector3(velocity.x*10,velocity.y*10,velocity.z*10);
 			rb.AddForce(velocity.x*300,velocity.y*300,velocity.z*800);

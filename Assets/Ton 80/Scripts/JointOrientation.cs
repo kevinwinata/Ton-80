@@ -40,7 +40,7 @@ public class JointOrientation : MonoBehaviour
 		// bool updateReference = false;
 		if (thalmicMyo.pose != _lastPose) {
 
-			if (thalmicMyo.pose == Pose.Fist || thalmicMyo.pose == Pose.WaveIn) {
+			if (thalmicMyo.pose == Pose.Fist || thalmicMyo.pose == Pose.WaveOut) {
 				// _antiYaw represents a rotation of the Myo armband about the Y axis (up) which aligns the forward
 				// vector of the rotation with Z = 1 when the wearer's arm is pointing in the reference direction.
 				_antiYaw = Quaternion.FromToRotation (
@@ -69,7 +69,7 @@ public class JointOrientation : MonoBehaviour
 			// }
 		}
 		else {
-			if (thalmicMyo.pose == Pose.Fist || thalmicMyo.pose == Pose.WaveIn) {
+			if (thalmicMyo.pose == Pose.Fist || thalmicMyo.pose == Pose.WaveOut) {
 				// Current zero roll vector and roll value.
 				Vector3 zeroRoll = computeZeroRollVector (myo.transform.forward);
 				float roll = rollFromZero (zeroRoll, myo.transform.forward, myo.transform.up);
