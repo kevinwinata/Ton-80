@@ -44,7 +44,7 @@ public class PickAndThrow : MonoBehaviour
 				{
 					state = 1;
 					GameObject clone = Instantiate(gameObject, transform.position, transform.rotation) as GameObject;
-					clone.transform.DOMoveY(0,1).OnComplete(delegate()
+					clone.transform.DOMoveY(0,0.5f).OnComplete(delegate()
 						{
 							joint = clone.AddComponent<FixedJoint>();
 							Rigidbody stickrb = (Rigidbody)GameObject.Find("Stick").GetComponent("Rigidbody");
@@ -63,7 +63,9 @@ public class PickAndThrow : MonoBehaviour
 					(_lastPose == Pose.Fist || _lastPose == Pose.WaveOut) &&
 					velocity.z > 0) 
 				{
-					rb.AddForce(300,300,800);
+					GameObject.Destroy(gameObject.GetComponent<FixedJoint>());
+					Vector3 v = new Vector3(velocity.x*150,velocity.y*150,velocity.z*400);
+					rb.AddForce(v,ForceMode.Impulse);
 					rb.useGravity = true;
 					state = 3;
 				}
@@ -73,7 +75,7 @@ public class PickAndThrow : MonoBehaviour
 				{
 					rb.AddForce(velocity.x*(-200),velocity.y*(-200),velocity.z*(-600));
 				}
-				if (transform.position.z > 5.23 || transform.position.y < -2)
+				if (transform.position.z > 3.95 || transform.position.y < -2)
 				{
 					rb.isKinematic = true;
 					state = 4;
