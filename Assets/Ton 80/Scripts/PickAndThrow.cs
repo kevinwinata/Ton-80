@@ -20,14 +20,15 @@ public class PickAndThrow : MonoBehaviour
 
 	public int state;
 	// 0 : unpicked
-	// 1 : picked, aiming
-	// 2 : thrown
-	// 3 : stick
+	// 1 : original dart waiting for clone to be thrown
+	// 2 : picked, aiming
+	// 3 : thrown
+	// 4 : stick
 
 	void Start() 
 	{
 		rb = GetComponent<Rigidbody>();
-		state = 0;
+		GameObject.Find("dart").GetComponent<PickAndThrow>().state = 0;
 	}
 
 	void Update()
@@ -38,42 +39,49 @@ public class PickAndThrow : MonoBehaviour
 		switch(state) {
 			case 0 :
 				if (thalmicMyo.pose != _lastPose && 
-					(thalmicMyo.pose == Pose.Fist || thalmicMyo.pose == Pose.WaveOut)) 
+					(thalmicMyo.pose == Pose.Fist || thalmicMyo.pose == Pose.WaveOut) && 
+					!GameObject.Find("dart(Clone)")) 
 				{
-					transform.DOMoveY(0,1).OnComplete(delegate()
+					state = 1;
+					GameObject clone = Instantiate(gameObject, transform.position, transform.rotation) as GameObject;
+					clone.transform.DOMoveY(0,1).OnComplete(delegate()
 						{
-							joint = gameObject.AddComponent<FixedJoint>();
+							joint = clone.AddComponent<FixedJoint>();
 							Rigidbody stickrb = (Rigidbody)GameObject.Find("Stick").GetComponent("Rigidbody");
 							joint.connectedBody = stickrb;
 							joint.breakForce = 1;
 							
-							transform.position = new Vector3(transform.position.x, 0, transform.position.z);
-							state = 1;
+							clone.transform.position = new Vector3(transform.position.x, 0, transform.position.z);
+							clone.GetComponent<PickAndThrow>().state = 2;
 						});
 				}
 				break;
 			case 1 : 
+				break;
+			case 2 : 
 				if (thalmicMyo.pose != _lastPose && 
 					(_lastPose == Pose.Fist || _lastPose == Pose.WaveOut) &&
 					velocity.z > 0) 
 				{
-					rb.AddForce(velocity.x*300,velocity.y*300,velocity.z*800);
+					rb.AddForce(300,300,800);
 					rb.useGravity = true;
-					state = 2;
-				}
-				break;
-			case 2 : 
-				if (velocity.magnitude > 0.75)
-				{
-					rb.AddForce(velocity.x*(-200),velocity.y*(-200),velocity.z*(-600));
-				}
-				if (transform.position.z > 5.23)
-				{
-					rb.isKinematic = true;
 					state = 3;
 				}
 				break;
 			case 3 : 
+				if (velocity.magnitude > 0.75)
+				{
+					rb.AddForce(velocity.x*(-200),velocity.y*(-200),velocity.z*(-600));
+				}
+				if (transform.position.z > 5.23 || transform.position.y < -2)
+				{
+					rb.isKinematic = true;
+					state = 4;
+				}
+				GameObject.Find("dart").GetComponent<PickAndThrow>().state = 0;
+				break;
+			case 4 : 
+				GameObject.Destroy(gameObject);
 				break;
 		}
 		
