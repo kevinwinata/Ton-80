@@ -14,52 +14,51 @@ public class Comment : MonoBehaviour
 
 		ThalmicMyo thalmicMyo = myo.GetComponent<ThalmicMyo> ();
 
-		if (!hub.hubInitialized) {
-			GUI.Label(new Rect (12, 8, Screen.width, Screen.height),
+		if (!hub.hubInitialized) 
+		{
+			GUI.Label(new Rect(12,8,Screen.width,Screen.height),
 				"Cannot contact Myo Connect. Is Myo Connect running?\n" +
 				"Press Q to try again."
 			);
-		} else if (!thalmicMyo.isPaired) {
-			GUI.Label(new Rect (12, 8, Screen.width, Screen.height),
+		} 
+		else if (!thalmicMyo.isPaired) 
+		{
+			GUI.Label(new Rect(12,8,Screen.width,Screen.height),
 				"No Myo currently paired."
 			);
-		} else if (!thalmicMyo.armSynced) {
-			GUI.Label(new Rect (12, 8, Screen.width, Screen.height),
+		} 
+		else if (!thalmicMyo.armSynced) 
+		{
+			GUI.Label(new Rect(12,8,Screen.width,Screen.height),
 				"Perform the Sync Gesture."
 			);
-		} else {
-			string str;
-			switch(thalmicMyo.pose) {
+		} 
+		else 
+		{
+			switch(thalmicMyo.pose) 
+			{
 				case Pose.Fist:
-					str = "Fist";
+					GUI.Label(new Rect(12,8,Screen.width,Screen.height),"Fist");
 					break;
 				case Pose.WaveIn:
-					str = "WaveIn";
+					GUI.Label(new Rect(12,8,Screen.width,Screen.height),"WaveIn");
 					break;
 				case Pose.WaveOut:
-					str = "WaveOut";
+					GUI.Label(new Rect(12,8,Screen.width,Screen.height),"WaveOut");
 					break;
 				case Pose.DoubleTap:
-					str = "DoubleTap";
+					GUI.Label(new Rect(12,8,Screen.width,Screen.height),"DoubleTap");
 					break;
 				case Pose.FingersSpread:
-					str = "FingersSpread";
+					GUI.Label(new Rect(12,8,Screen.width,Screen.height),"FingersSpread");
 					break;
 				case Pose.Rest:
-					str = "Rest";
+					GUI.Label(new Rect(12,8,Screen.width,Screen.height),"Rest");
 					break;
 				default:
-					str = "Unknown";
+					GUI.Label(new Rect(12,8,Screen.width,Screen.height),"Unknown");
 					break;
 			}
-			GUI.Label (new Rect (12, 8, Screen.width, Screen.height),
-				// "Fist: Vibrate Myo armband\n" +
-				// "Wave in: Set box material to blue\n" +
-				// "Wave out: Set box material to green\n" +
-				// "Double tap: Reset box material\n" +
-				// "Fingers spread: Set forward direction"
-				str
-			);
 		}
 	}
 

@@ -18,12 +18,14 @@ public class PickAndThrow : MonoBehaviour
 
 	private FixedJoint joint;
 
+	public ScoreBoard scoreBoard;
+
 	public int state;
 	// 0 : unpicked
 	// 1 : original dart waiting for clone to be thrown
 	// 2 : picked, aiming
 	// 3 : thrown
-	// 4 : stick
+	// 4 : stuck
 
 	void Start() 
 	{
@@ -37,6 +39,7 @@ public class PickAndThrow : MonoBehaviour
 		ThalmicMyo thalmicMyo = myo.GetComponent<ThalmicMyo> ();
 
 		switch(state) {
+
 			case 0 :
 				if (thalmicMyo.pose != _lastPose && 
 					(thalmicMyo.pose == Pose.Fist || thalmicMyo.pose == Pose.WaveOut) && 
@@ -53,11 +56,18 @@ public class PickAndThrow : MonoBehaviour
 							
 							clone.transform.position = new Vector3(transform.position.x, 0, transform.position.z);
 							clone.GetComponent<PickAndThrow>().state = 2;
-						});
+						}
+					);
+					if (scoreBoard.isBoardFull())
+					{
+						scoreBoard.emptyBoard();
+					}
 				}
 				break;
+
 			case 1 : 
 				break;
+
 			case 2 : 
 				if (thalmicMyo.pose != _lastPose && 
 					(_lastPose == Pose.Fist || _lastPose == Pose.WaveOut) &&
@@ -70,6 +80,7 @@ public class PickAndThrow : MonoBehaviour
 					state = 3;
 				}
 				break;
+
 			case 3 : 
 				if (velocity.magnitude > 0.75)
 				{
@@ -78,12 +89,12 @@ public class PickAndThrow : MonoBehaviour
 				if (transform.position.z > 3.95 || transform.position.y < -2)
 				{
 					rb.isKinematic = true;
+					name = "dart(Stuck)";
+					tag = "Stuck";
+					scoreBoard.addDart(transform.position);
 					state = 4;
 				}
 				GameObject.Find("dart").GetComponent<PickAndThrow>().state = 0;
-				break;
-			case 4 : 
-				GameObject.Destroy(gameObject);
 				break;
 		}
 		
