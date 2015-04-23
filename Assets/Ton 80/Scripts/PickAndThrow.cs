@@ -35,11 +35,10 @@ public class PickAndThrow : MonoBehaviour
 
 	void Update()
 	{
-		// Access the ThalmicMyo component attached to the Myo object.
 		ThalmicMyo thalmicMyo = myo.GetComponent<ThalmicMyo> ();
 
-		switch(state) {
-
+		switch(state) 
+		{
 			case 0 :
 				if (thalmicMyo.pose != _lastPose && 
 					(thalmicMyo.pose == Pose.Fist || thalmicMyo.pose == Pose.WaveOut) && 
@@ -98,7 +97,8 @@ public class PickAndThrow : MonoBehaviour
 				break;
 		}
 		
-		if (thalmicMyo.pose != Pose.Unknown) {
+		if (thalmicMyo.pose != Pose.Unknown) 
+		{
 			_lastPose = thalmicMyo.pose;
 		}
 	}

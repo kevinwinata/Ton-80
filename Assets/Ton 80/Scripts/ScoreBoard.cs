@@ -35,6 +35,9 @@ public class ScoreBoard : MonoBehaviour
 
 	public int countScores(Vector3 position)
 	{
+		if (transform.position.y < -2)
+			return 0;
+			
 		Vector3 v = transform.position - position;
 		double radius = Mathf.Sqrt(v.x*v.x + v.y*v.y);
 		double angle = Mathf.Atan2(v.y, v.x);
@@ -86,6 +89,8 @@ public class ScoreBoard : MonoBehaviour
 			multiplier = 2;
 		else if (radius > 0.8 && radius < 0.85)
 			multiplier = 3;
+		else if (radius > 0.85)
+			multiplier = 0;
 
 		return score*multiplier;
 	}
@@ -116,6 +121,6 @@ public class ScoreBoard : MonoBehaviour
 
 	public bool isBoardFull() 
 	{
-		return (curDart == maxDart - 1);
+		return (curDart == maxDart);
 	}
 }

@@ -17,9 +17,10 @@ public class Aim : MonoBehaviour
 	{
 		ThalmicMyo thalmicMyo = myo.GetComponent<ThalmicMyo> ();
 
-		if (thalmicMyo.pose != _lastPose) {
-
-			if (thalmicMyo.pose == Pose.Fist || thalmicMyo.pose == Pose.WaveOut) {
+		if (thalmicMyo.pose != _lastPose) 
+		{
+			if (thalmicMyo.pose == Pose.Fist || thalmicMyo.pose == Pose.WaveOut) 
+			{
 				_antiYaw = Quaternion.FromToRotation (
 					new Vector3 (myo.transform.forward.x, 0, myo.transform.forward.z),
 					new Vector3 (0, 0, 1)
@@ -32,8 +33,10 @@ public class Aim : MonoBehaviour
 			}
 		}
 		
-		else {
-			if (thalmicMyo.pose == Pose.Fist || thalmicMyo.pose == Pose.WaveOut) {
+		else 
+		{
+			if (thalmicMyo.pose == Pose.Fist || thalmicMyo.pose == Pose.WaveOut) 
+			{
 				Vector3 zeroRoll = computeZeroRollVector (myo.transform.forward);
 				float roll = rollFromZero (zeroRoll, myo.transform.forward, myo.transform.up);
 
@@ -43,7 +46,8 @@ public class Aim : MonoBehaviour
 
 				transform.rotation = _antiYaw * antiRoll * Quaternion.LookRotation (myo.transform.forward);
 
-				if (thalmicMyo.xDirection == Thalmic.Myo.XDirection.TowardWrist) {
+				if (thalmicMyo.xDirection == Thalmic.Myo.XDirection.TowardWrist) 
+				{
 					transform.rotation = new Quaternion(transform.localRotation.x,
 														-transform.localRotation.y,
 														transform.localRotation.z,
@@ -52,7 +56,8 @@ public class Aim : MonoBehaviour
 			}
 		}
 
-		if (thalmicMyo.pose != Pose.Rest && thalmicMyo.pose != Pose.Unknown) {
+		if (thalmicMyo.pose != Pose.Rest && thalmicMyo.pose != Pose.Unknown) 
+		{
 			_lastPose = thalmicMyo.pose;
 		}
 	}
@@ -79,10 +84,12 @@ public class Aim : MonoBehaviour
 
 	float normalizeAngle (float angle)
 	{
-		if (angle > 180.0f) {
+		if (angle > 180.0f) 
+		{
 			return angle - 360.0f;
 		}
-		if (angle < -180.0f) {
+		if (angle < -180.0f) 
+		{
 			return angle + 360.0f;
 		}
 		return angle;
@@ -92,7 +99,8 @@ public class Aim : MonoBehaviour
 	{
 		ThalmicHub hub = ThalmicHub.instance;
 
-		if (hub.lockingPolicy == LockingPolicy.Standard) {
+		if (hub.lockingPolicy == LockingPolicy.Standard) 
+		{
 			myo.Unlock (UnlockType.Timed);
 		}
 
