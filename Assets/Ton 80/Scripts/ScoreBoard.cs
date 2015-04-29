@@ -24,14 +24,16 @@ public class ScoreBoard : MonoBehaviour
 
 	void OnGUI ()
 	{
+		GUI.color = Color.gray;
 		GUI.skin.label.fontSize = 20;
 		int sum = 0;
 		for(int i = 0; i < curDart; i++)
 		{
-			GUI.Label(new Rect(20,20+(i*10),Screen.width,Screen.height),scores[i].ToString());
+			GUI.Label(new Rect(55,50+(i*20),Screen.width,Screen.height),scores[i].ToString());
 			sum += scores[i];
 		}
-		GUI.Label(new Rect(20,20+(maxDart*10),Screen.width,Screen.height),sum.ToString());
+		GUI.Label(new Rect(12,40+(maxDart*20),Screen.width,Screen.height),"__________");
+		GUI.Label(new Rect(30,60+(maxDart*20),Screen.width,Screen.height),"Total : "+sum.ToString());
 	}
 
 	public int countScores(Vector3 position)
@@ -55,7 +57,7 @@ public class ScoreBoard : MonoBehaviour
 		}
 		else
 		{
-			Vector3 v = transform.position - position;
+			Vector3 v = position;
 			double radius = Mathf.Sqrt(v.x*v.x + v.y*v.y);
 			double angle = Mathf.Atan2(v.y, v.x);
 
@@ -115,6 +117,8 @@ public class ScoreBoard : MonoBehaviour
 				multiplier = 0;
 				commentIdx = 0;
 			}
+			Debug.Log("score: "+score.ToString());
+			Debug.Log("multiplier: "+multiplier.ToString());
 
 			result = score*multiplier;
 
@@ -128,13 +132,9 @@ public class ScoreBoard : MonoBehaviour
 
 	public void addDart(Vector3 position) 
 	{
-		Debug.Log(curDart.ToString());
-		if (curDart < maxDart - 1)
-		{
-			dartPositions[curDart] = position;
-			scores[curDart] = countScores(position);
-			curDart++;
-		}
+		dartPositions[curDart] = position;
+		scores[curDart] = countScores(position);
+		curDart++;
 	}
 
 	public void emptyBoard()
