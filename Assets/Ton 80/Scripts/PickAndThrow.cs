@@ -76,6 +76,7 @@ public class PickAndThrow : MonoBehaviour
 					Vector3 v = new Vector3(velocity.x*150,velocity.y*150,velocity.z*400);
 					rb.AddForce(v,ForceMode.Impulse);
 					rb.useGravity = true;
+					GetComponent<AudioSource>().Play();
 					state = 3;
 				}
 				break;

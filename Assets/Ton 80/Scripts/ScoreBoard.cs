@@ -104,15 +104,25 @@ public class ScoreBoard : MonoBehaviour
 				score = 11;
 
 			int multiplier = 1;
-			if (radius > 0.5 && radius < 0.55) 
+			if (radius >= 0 && radius < 0.240) 
 			{
 				multiplier = 2;
+				score = 25;
 			}
-			else if (radius > 0.8 && radius < 0.85) 
+			else if (radius >= 0.240 && radius < 0.350) 
+			{
+				multiplier = 1;
+				score = 25;
+			}
+			else if (radius > 0.765 && radius < 0.855) 
 			{
 				multiplier = 3;
 			}
-			else if (radius > 0.85) 
+			else if (radius > 1.090 && radius < 1.180) 
+			{
+				multiplier = 2;
+			}
+			else if (radius >= 1.160) 
 			{
 				multiplier = 0;
 				commentIdx = 0;
@@ -132,6 +142,7 @@ public class ScoreBoard : MonoBehaviour
 
 	public void addDart(Vector3 position) 
 	{
+		if(position.z > 3.90) GetComponent<AudioSource>().Play();
 		dartPositions[curDart] = position;
 		scores[curDart] = countScores(position);
 		curDart++;
