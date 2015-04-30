@@ -9,27 +9,27 @@ public class Comment : MonoBehaviour
 	void OnGUI ()
 	{
 		GUI.skin.label.fontSize = 20;
-
+		Rect labelPos = new Rect(12,Screen.height-30,Screen.width,Screen.height);
 		ThalmicHub hub = ThalmicHub.instance;
 
 		ThalmicMyo thalmicMyo = myo.GetComponent<ThalmicMyo> ();
 
 		if (!hub.hubInitialized) 
 		{
-			GUI.Label(new Rect(12,8,Screen.width,Screen.height),
+			GUI.Label(labelPos,
 				"Cannot contact Myo Connect. Is Myo Connect running?\n" +
 				"Press Q to try again."
 			);
 		} 
 		else if (!thalmicMyo.isPaired) 
 		{
-			GUI.Label(new Rect(12,8,Screen.width,Screen.height),
+			GUI.Label(labelPos,
 				"No Myo currently paired."
 			);
 		} 
 		else if (!thalmicMyo.armSynced) 
 		{
-			GUI.Label(new Rect(12,8,Screen.width,Screen.height),
+			GUI.Label(labelPos,
 				"Perform the Sync Gesture."
 			);
 		} 
@@ -38,25 +38,25 @@ public class Comment : MonoBehaviour
 			switch(thalmicMyo.pose) 
 			{
 				case Pose.Fist:
-					GUI.Label(new Rect(12,8,Screen.width,Screen.height),"Fist");
+					GUI.Label(labelPos,"Fist");
 					break;
 				case Pose.WaveIn:
-					GUI.Label(new Rect(12,8,Screen.width,Screen.height),"WaveIn");
+					GUI.Label(labelPos,"WaveIn");
 					break;
 				case Pose.WaveOut:
-					GUI.Label(new Rect(12,8,Screen.width,Screen.height),"WaveOut");
+					GUI.Label(labelPos,"WaveOut");
 					break;
 				case Pose.DoubleTap:
-					GUI.Label(new Rect(12,8,Screen.width,Screen.height),"DoubleTap");
+					GUI.Label(labelPos,"DoubleTap");
 					break;
 				case Pose.FingersSpread:
-					GUI.Label(new Rect(12,8,Screen.width,Screen.height),"FingersSpread");
+					GUI.Label(labelPos,"FingersSpread");
 					break;
 				case Pose.Rest:
-					GUI.Label(new Rect(12,8,Screen.width,Screen.height),"Rest");
+					GUI.Label(labelPos,"Rest");
 					break;
 				default:
-					GUI.Label(new Rect(12,8,Screen.width,Screen.height),"Unknown");
+					GUI.Label(labelPos,"Unknown");
 					break;
 			}
 		}

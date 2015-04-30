@@ -9,6 +9,7 @@ public class ScoreBoard : MonoBehaviour
 	public int curDart;
 	public Vector3[] dartPositions;
 	public int commentIdx;
+	public Font font;
 
 	void Start() 
 	{
@@ -25,7 +26,7 @@ public class ScoreBoard : MonoBehaviour
 
 	void OnGUI ()
 	{
-		GUI.color = Color.gray;
+		GUI.skin.font = font;
 		GUI.skin.label.fontSize = 20;
 		int sum = 0;
 		for(int i = 0; i < curDart; i++)
@@ -33,8 +34,7 @@ public class ScoreBoard : MonoBehaviour
 			GUI.Label(new Rect(55,50+(i*20),Screen.width,Screen.height),scores[i].ToString());
 			sum += scores[i];
 		}
-		GUI.Label(new Rect(12,40+(maxDart*20),Screen.width,Screen.height),"__________");
-		GUI.Label(new Rect(30,60+(maxDart*20),Screen.width,Screen.height),"Total : "+sum.ToString());
+		GUI.Label(new Rect(30,65+(maxDart*20),Screen.width,Screen.height),"Total : "+sum.ToString());
 	}
 
 	public int countScores(Vector3 position)
