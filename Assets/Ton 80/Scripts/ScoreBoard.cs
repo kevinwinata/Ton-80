@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using DG.Tweening;
 
 public class ScoreBoard : MonoBehaviour
 {
@@ -142,7 +143,16 @@ public class ScoreBoard : MonoBehaviour
 
 	public void addDart(Vector3 position) 
 	{
-		if(position.z > 3.90) GetComponent<AudioSource>().Play();
+		if(position.z > 3.90) 
+		{
+			GetComponent<AudioSource>().Play();
+
+			GameObject hl = GameObject.Find("Hitlight");
+			hl.transform.position = new Vector3(position.x,position.y,hl.transform.position.z);
+
+			Light light = (Light)hl.GetComponent<Light>();
+			light.DOIntensity(2,0.3f).OnComplete(delegate(){ light.DOIntensity(0,0.3f); });
+		}
 		dartPositions[curDart] = position;
 		scores[curDart] = countScores(position);
 		curDart++;
@@ -153,6 +163,7 @@ public class ScoreBoard : MonoBehaviour
 		dartPositions = new Vector3[maxDart];
 		scores = new int[maxDart];
 		curDart = 0;
+		
 		GameObject[] stuckDarts;
         stuckDarts = GameObject.FindGameObjectsWithTag("Stuck");
         foreach (GameObject dart in stuckDarts) 
