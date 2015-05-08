@@ -128,8 +128,6 @@ public class ScoreBoard : MonoBehaviour
 				multiplier = 0;
 				commentIdx = 0;
 			}
-			Debug.Log("score: "+score.ToString());
-			Debug.Log("multiplier: "+multiplier.ToString());
 
 			result = score*multiplier;
 

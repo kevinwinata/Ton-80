@@ -19,6 +19,7 @@ public class PickAndThrow : MonoBehaviour
 	private FixedJoint joint;
 
 	public ScoreBoard scoreBoard;
+	public Aim aim;
 
 	public int state;
 	// 0 : unpicked
@@ -48,6 +49,7 @@ public class PickAndThrow : MonoBehaviour
 					GameObject clone = Instantiate(gameObject, transform.position, transform.rotation) as GameObject;
 					clone.transform.DOMoveY(0,0.5f).OnComplete(delegate()
 						{
+							aim.resetAim();
 							joint = clone.AddComponent<FixedJoint>();
 							Rigidbody stickrb = (Rigidbody)GameObject.Find("Stick").GetComponent("Rigidbody");
 							joint.connectedBody = stickrb;
@@ -68,9 +70,9 @@ public class PickAndThrow : MonoBehaviour
 				break;
 
 			case 2 : 
-				if (thalmicMyo.pose != _lastPose && 
-					(_lastPose == Pose.Fist || _lastPose == Pose.WaveOut) &&
-					velocity.z > 0) 
+				if (thalmicMyo.pose != Pose.WaveOut && 
+					thalmicMyo.pose != Pose.Fist && 
+					velocity.z > 0.1f) 
 				{
 					GameObject.Destroy(gameObject.GetComponent<FixedJoint>());
 					Vector3 v = new Vector3(velocity.x*150,velocity.y*150,velocity.z*400);
@@ -78,6 +80,7 @@ public class PickAndThrow : MonoBehaviour
 					rb.useGravity = true;
 					GetComponent<AudioSource>().Play();
 					state = 3;
+					aim.canMove = false;
 				}
 				break;
 

@@ -11,55 +11,59 @@ public class Aim : MonoBehaviour
 	public GameObject myo = null;
 	private Quaternion _antiYaw = Quaternion.identity;
 	private float _referenceRoll = 0.0f;
-	private Pose _lastPose = Pose.Unknown;
+	//private Pose _lastPose = Pose.Unknown;
+
+	public bool canMove;
+
+	void Start ()
+	{
+		canMove = false;
+	}
 
 	void Update ()
 	{
+		if(canMove) updatePosition();
+	}
+
+	public void updatePosition ()
+	{
 		ThalmicMyo thalmicMyo = myo.GetComponent<ThalmicMyo> ();
 
-		if (thalmicMyo.pose != _lastPose) 
+		Vector3 zeroRoll = computeZeroRollVector (myo.transform.forward);
+		float roll = rollFromZero (zeroRoll, myo.transform.forward, myo.transform.up);
+
+		float relativeRoll = normalizeAngle (roll - _referenceRoll);
+
+		Quaternion antiRoll = Quaternion.AngleAxis (relativeRoll, myo.transform.forward);
+
+		transform.rotation = _antiYaw * antiRoll * Quaternion.LookRotation (myo.transform.forward);
+
+		if (thalmicMyo.xDirection == Thalmic.Myo.XDirection.TowardWrist) 
 		{
-			if (thalmicMyo.pose == Pose.Fist || thalmicMyo.pose == Pose.WaveOut) 
-			{
-				_antiYaw = Quaternion.FromToRotation (
-					new Vector3 (myo.transform.forward.x, 0, myo.transform.forward.z),
-					new Vector3 (0, 0, 1)
-				);
-
-				Vector3 referenceZeroRoll = computeZeroRollVector (myo.transform.forward);
-				_referenceRoll = rollFromZero (referenceZeroRoll, myo.transform.forward, myo.transform.up);
-
-				ExtendUnlockAndNotifyUserAction(thalmicMyo);
-			}
+			transform.rotation = new Quaternion(transform.localRotation.x,
+												-transform.localRotation.y,
+												transform.localRotation.z,
+												-transform.localRotation.w);
 		}
-		
-		else 
-		{
-			if (thalmicMyo.pose == Pose.Fist || thalmicMyo.pose == Pose.WaveOut) 
-			{
-				Vector3 zeroRoll = computeZeroRollVector (myo.transform.forward);
-				float roll = rollFromZero (zeroRoll, myo.transform.forward, myo.transform.up);
+	}
 
-				float relativeRoll = normalizeAngle (roll - _referenceRoll);
+	public void resetAim ()
+	{
+		_antiYaw = Quaternion.FromToRotation (
+			new Vector3 (myo.transform.forward.x, 0, myo.transform.forward.z),
+			new Vector3 (0, 0, 1)
+		);
 
-				Quaternion antiRoll = Quaternion.AngleAxis (relativeRoll, myo.transform.forward);
+		Vector3 referenceZeroRoll = computeZeroRollVector (myo.transform.forward);
+		_referenceRoll = rollFromZero (referenceZeroRoll, myo.transform.forward, myo.transform.up);
 
-				transform.rotation = _antiYaw * antiRoll * Quaternion.LookRotation (myo.transform.forward);
+		updatePosition();
+		Invoke("enableMove", 0.2f);
+	}
 
-				if (thalmicMyo.xDirection == Thalmic.Myo.XDirection.TowardWrist) 
-				{
-					transform.rotation = new Quaternion(transform.localRotation.x,
-														-transform.localRotation.y,
-														transform.localRotation.z,
-														-transform.localRotation.w);
-				}
-			}
-		}
-
-		if (thalmicMyo.pose != Pose.Rest && thalmicMyo.pose != Pose.Unknown) 
-		{
-			_lastPose = thalmicMyo.pose;
-		}
+	void enableMove() 
+	{
+		canMove = true;
 	}
 
 	float rollFromZero (Vector3 zeroRoll, Vector3 forward, Vector3 up)
