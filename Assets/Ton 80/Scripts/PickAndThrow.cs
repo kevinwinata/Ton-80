@@ -59,10 +59,12 @@ public class PickAndThrow : MonoBehaviour
 							clone.GetComponent<PickAndThrow>().state = 2;
 						}
 					);
-					if (scoreBoard.isBoardFull())
+
+					if (scoreBoard.isBoardFull() || scoreBoard.isBust)
 					{
 						scoreBoard.emptyBoard();
 					}
+					scoreBoard.isBust = false;
 				}
 				break;
 
@@ -75,7 +77,7 @@ public class PickAndThrow : MonoBehaviour
 					velocity.z > 0.1f) 
 				{
 					GameObject.Destroy(gameObject.GetComponent<FixedJoint>());
-					Vector3 v = new Vector3(velocity.x*150,velocity.y*150,velocity.z*400);
+					Vector3 v = new Vector3(velocity.x*150,velocity.y*150,velocity.z*200);
 					rb.AddForce(v,ForceMode.Impulse);
 					rb.useGravity = true;
 					GetComponent<AudioSource>().Play();
@@ -85,11 +87,7 @@ public class PickAndThrow : MonoBehaviour
 				break;
 
 			case 3 : 
-				if (velocity.magnitude > 0.75)
-				{
-					rb.AddForce(velocity.x*(-200),velocity.y*(-200),velocity.z*(-600));
-				}
-				if (transform.position.z > 3.95 || transform.position.y < -2)
+				if (transform.position.z > 3.9 || transform.position.y < -2)
 				{
 					rb.isKinematic = true;
 					name = "dart(Stuck)";

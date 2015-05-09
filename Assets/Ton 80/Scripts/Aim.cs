@@ -58,11 +58,6 @@ public class Aim : MonoBehaviour
 		_referenceRoll = rollFromZero (referenceZeroRoll, myo.transform.forward, myo.transform.up);
 
 		updatePosition();
-		Invoke("enableMove", 0.2f);
-	}
-
-	void enableMove() 
-	{
 		canMove = true;
 	}
 
